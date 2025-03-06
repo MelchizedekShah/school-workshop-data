@@ -19,7 +19,6 @@ for round in rounds:
     count = len(results)
     print("COUNT: " + str(count))
 
-    # Create the "Round1" directory if it doesn't exist
     if not os.path.exists(round):
         os.makedirs(round)
 
@@ -33,13 +32,15 @@ for round in rounds:
             WHERE Activities.activity_name = ?
         """.format(round), (activity,))
 
+        rows = cur.fetchall()
+        student_count = len(rows)
+
         file_path = os.path.join(round, activity + ".txt")
         fhand = open(file_path, "w")
         fhand.write(activity + "\n")  
-        fhand.write("\n")
+        fhand.write("Total Students: " + str(student_count) + "\n")
         fhand.write("\n")
 
-        rows = cur.fetchall()
         for info in rows:
             fhand.write(" ".join(info) + "\n") 
 
